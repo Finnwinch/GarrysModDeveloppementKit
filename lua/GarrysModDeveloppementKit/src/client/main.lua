@@ -1,1 +1,8 @@
 MsgC(Color(255,0,0),"@GarrysModDeveloppementKit",Color(0,255,0)," LOAD ",Color(255,0,255),"script\n")
+GarrysModDeveloppementKit.Core:setListener("OpenInterfaceWhenPlayerSpawn",function(len)
+    local dframe = vgui.Create("DFrame")
+    dframe:SetSize(GarrysModDeveloppementKit.Screen.ResponsiveWide(700),GarrysModDeveloppementKit.Screen.ResponsiveTall(400))
+    dframe:Center()
+    dframe:MakePopup()
+    dframe:SetTitle(GarrysModDeveloppementKit.String.AddonsName.." #"..len)
+end)

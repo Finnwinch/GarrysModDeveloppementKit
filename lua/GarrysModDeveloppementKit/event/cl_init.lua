@@ -1,5 +1,7 @@
 hook.Add("PreGamemodeLoaded","init the GarrysModDeveloppementKit preparation",function()
     include("GarrysModDeveloppementKit/cache/static.lua")
+    include("GarrysModDeveloppementKit/controller/core/client.lua")
+    GarrysModDeveloppementKit.Core()
 end)
 hook.Add("PostGamemodeLoaded","init the GarrysModDeveloppementKit Gunit and addons",function()
     include("GarrysModDeveloppementKit/src/client/gunit.lua")

@@ -16,8 +16,8 @@ GarrysModDeveloppementKit.Colors.Gray       = Color(52, 58, 64)
     String options
 ]]------------------------------------------------------------------
 GarrysModDeveloppementKit.String = {}
-GarrysModDeveloppementKit.String.AddonsName = SERVER and "Garry's Mod Développement Kit"
-GarrysModDeveloppementKit.String.AddonsVersion = SERVER and "1"
+GarrysModDeveloppementKit.String.AddonsName = "Garry's Mod Développement Kit"
+GarrysModDeveloppementKit.String.AddonsVersion = "1"
 --[[----------------------------------------------------------------
     Screen options
 ]]------------------------------------------------------------------
