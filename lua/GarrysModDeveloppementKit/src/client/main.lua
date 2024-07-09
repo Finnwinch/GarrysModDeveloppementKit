@@ -5,4 +5,33 @@ GarrysModDeveloppementKit.Core:setListener("OpenInterfaceWhenPlayerSpawn",functi
     dframe:Center()
     dframe:MakePopup()
     dframe:SetTitle(GarrysModDeveloppementKit.String.AddonsName.." #"..len)
+    local async = vgui.Create("DButton",dframe)
+    async:SetSize(GarrysModDeveloppementKit.Screen.ResponsiveWide(100),GarrysModDeveloppementKit.Screen.ResponsiveTall(50))
+    async:Center()
+    async:SetText("Async request")
+    async.DoClick = function()
+        GarrysModDeveloppementKit.Core:async({
+            WINDOWS = dframe,
+            BUTTON = async
+        },{
+            MessageOne = "ok boomer"
+        },[[
+            if ARGS.MessageOne == "ok boomer" then print("lol") end
+            RESULT.Final = "merci"
+            return
+        ]],[[
+            STATIC.WINDOWS.Paint = function(self,w,h)
+                draw.RoundedBox(0,0,0,w,h,GarrysModDeveloppementKit.Colors.Success)
+            end
+            STATIC.BUTTON:SetEnabled(false)
+            STATIC.BUTTON.Paint = function(self,w,h)
+                draw.RoundedBox(0,0,0,w,h,GarrysModDeveloppementKit.Colors.Danger)
+            end
+            STATIC.BUTTON:SetTextColor(GarrysModDeveloppementKit.Colors.Dark)
+            print(RESULT.Final)
+            timer.Simple(3,function()
+                STATIC.WINDOWS:Remove()
+            end)
+        ]],true)
+    end
 end)

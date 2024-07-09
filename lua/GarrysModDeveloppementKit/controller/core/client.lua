@@ -4,13 +4,27 @@ function Core:setListener(StringIndex,VoidCatch) self.__listener[StringIndex] = 
 function Core:removeListener(StringIndex) table.RemoveByValue(self.__listener,StringIndex) end
 function Core:enableListener(BooleanEnable,StringIndex) self.__listener[StringIndex].isEnable = BooleanEnable end
 function Core:request(StringCommand) net.Start("@GarrysModDeveloppementKit::Core=>Controller{$CLIENT}{$PRIVATE}") net.WriteString(StringCommand) net.SendToServer() end
-
+function Core:async(TableStatic,TableArguments,StringServerExpression,StringClientExpression,BooleanIsForAllClients)
+    STATIC = TableStatic
+    net.Start("@GarrysModDeveloppementKit::Core=>Controller{$CLIENT}{$ASYNC}")
+        net.WriteTable(TableArguments)
+        net.WriteString(StringServerExpression)
+        net.WriteString(StringClientExpression)
+        net.WriteBool(BooleanIsForAllClients)
+    net.SendToServer()
+end
 GarrysModDeveloppementKit.Core = setmetatable(Core,{
     __newindex = function(self,key,value) end,
     __call = function(self)
         MsgC(Color(255,0,0),"@GarrysModDeveloppementKit",Color(0,255,255)," CHARGE ",Color(255,0,255),"Controller CLIENT\n")
         net.Receive("@GarrysModDeveloppementKit::Core=>Controller{$SERVER}{$PRIVATE}",function(len)
             self:getListener(net.ReadString())(len)
+        end)
+        net.Receive("@GarrysModDeveloppementKit::Core=>Controller{$CLIENT}{$ASYNC::RETURN}",function(len)
+            RESULT = net.ReadTable()
+            if STATIC == nil then print("nop") ; return end
+            RunString(net.ReadString())
+            RESULT = nil
         end)
     end
 })

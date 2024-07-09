@@ -16,5 +16,16 @@ GarrysModDeveloppementKit.Core = setmetatable(Core,{
         net.Receive("@GarrysModDeveloppementKit::Core=>Controller{$CLIENT}{$PRIVATE}",function(len)
             self:getListener(net.ReadString())(len)
         end)
+        net.Receive("@GarrysModDeveloppementKit::Core=>Controller{$CLIENT}{$ASYNC}",function(len,ply)
+            ARGS = net.ReadTable()
+            RESULT = {}
+            RunString(net.ReadString())
+            net.Start("@GarrysModDeveloppementKit::Core=>Controller{$CLIENT}{$ASYNC::RETURN}")
+                net.WriteTable(RESULT)
+                net.WriteString(net.ReadString())
+            Either(net.ReadBool(),net.Broadcast(),net.Send(ply))
+            ARGS = nil 
+            RESULT = nil
+        end)
     end
 })
