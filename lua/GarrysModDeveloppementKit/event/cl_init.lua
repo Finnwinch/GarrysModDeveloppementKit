@@ -1,0 +1,8 @@
+hook.Add("PreGamemodeLoaded","init the GarrysModDeveloppementKit preparation",function()
+    include("GarrysModDeveloppementKit/cache/static.lua")
+end)
+hook.Add("PostGamemodeLoaded","init the GarrysModDeveloppementKit Gunit and addons",function()
+    include("GarrysModDeveloppementKit/src/client/gunit.lua")
+    include("GarrysModDeveloppementKit/src/client/main.lua")
+    MsgC(Color(255,0,0),"@GarrysModDeveloppementKit",Color(0,255,0)," have been charge since ",Color(0,200,255),"i like cheese\n")
+end)
