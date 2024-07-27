@@ -11,7 +11,10 @@ hook.Add("PlayerInitialSpawn","yeah!",function(player)
                 autorized = true,
                 value = 911
             },
-            gg = "Ok boomer!"
-        }
+            gg = function() print("yeah") end
+        },
+        pos = Vector(0,0,0),
+        ang = Angle(0,10,0),
+        col = Color(255,0,0)
     },player)
 end)
