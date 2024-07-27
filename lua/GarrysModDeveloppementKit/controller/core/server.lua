@@ -10,9 +10,17 @@ function Core:request(StringCommand,who)
 end
 function Core:network(StringCommand,TableArguments,who,BooleanIsForAllClients)
     local package = "@"
-    for key,value in pairs(TableArguments) do
-        package = package .. key .. "$" .. value .. "@"
+    serialize = function(tableToSerial, parentKey)
+        for key, value in pairs(tableToSerial) do
+            local fullKey = parentKey and (parentKey .. "." .. key) or key
+            if type(value) == "table" then
+                serialize(value, fullKey)
+            else
+                package = package .. fullKey .. "$" .. tostring(value) .. "@"
+            end
+        end
     end
+    serialize(TableArguments)
     package = util.Compress(package)
     local size = #package
     net.Start("@GarrysModDeveloppementKit::Core=>Controller{$SERVER}{$PRIVATE}")
