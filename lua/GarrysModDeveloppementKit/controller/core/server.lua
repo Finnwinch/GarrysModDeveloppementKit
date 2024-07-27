@@ -40,7 +40,7 @@ function Core:read()
     return args
 end
 function Core:get(StringKey)
-    return self.__networks[StringKey] or "@GarrysModDeveloppementKit::Core=>Controller>>>{$"..StringKey.."} is null"
+    return self.__networks[StringKey] or "@GarrysModDeveloppementKit::Core=>Controller.NetworkRequest{$"..StringKey.."} is null"
 end
 GarrysModDeveloppementKit.Core = setmetatable(Core,{
     __newindex = function(self,key,value) end,
