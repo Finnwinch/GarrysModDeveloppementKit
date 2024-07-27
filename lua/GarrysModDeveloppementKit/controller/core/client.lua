@@ -1,9 +1,39 @@
-local Core = { __listener = {} }
+local Core = { __listener = {} ,__networks = {} }
 function Core:getListener(StringIndex) return self.__listener[StringIndex].isEnable and self.__listener[StringIndex].void end
 function Core:setListener(StringIndex,VoidCatch) self.__listener[StringIndex] = { isEnable = true, void = VoidCatch } end
 function Core:removeListener(StringIndex) table.RemoveByValue(self.__listener,StringIndex) end
 function Core:enableListener(BooleanEnable,StringIndex) self.__listener[StringIndex].isEnable = BooleanEnable end
-function Core:request(StringCommand) net.Start("@GarrysModDeveloppementKit::Core=>Controller{$CLIENT}{$PRIVATE}") net.WriteString(StringCommand) net.SendToServer() end
+function Core:request(StringCommand) 
+    net.Start("@GarrysModDeveloppementKit::Core=>Controller{$CLIENT}{$PRIVATE}") 
+        net.WriteString(StringCommand) 
+    net.SendToServer() 
+end
+function Core:network(StringCommand,TableArguments)
+    local package = "@"
+    for key,value in pairs(TableArguments) do
+        package = package .. key .. "$" .. value .. "@"
+    end
+    package = util.Compress(package)
+    local size = #package
+    net.Start("@GarrysModDeveloppementKit::Core=>Controller{$CLIENT}{$PRIVATE}")
+        net.WriteString(StringCommand)
+        net.WriteUInt(size,16)
+        net.WriteData(package,size)
+    net.SendToServer()
+end
+function Core:read()
+    local data,args = util.Decompress(net.ReadData(net.ReadUInt(16))), {}
+    for _, data in ipairs(string.Split(data,"@")) do
+        if (#data == 0) then continue end
+        local decompile = string.Split(data,"$")
+        args[decompile[1]] = decompile[2]
+    end
+    self.__networks = args
+    return args
+end
+function Core:get(StringKey)
+    return self.__networks[StringKey] or "@GarrysModDeveloppementKit::Core=>Controller.NetworkRequest{$"..StringKey.."} is null"
+end
 function Core:async(TableStatic,TableArguments,StringServerExpression,StringClientExpression,BooleanIsForAllClients)
     STATIC = TableStatic
     net.Start("@GarrysModDeveloppementKit::Core=>Controller{$CLIENT}{$ASYNC}")
